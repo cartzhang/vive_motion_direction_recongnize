@@ -527,7 +527,7 @@ public enum GestureType:int
 
 
 
-## 源码地址
+## 四、源码地址
 
 源码地址：
 
@@ -543,7 +543,7 @@ https://github.com/cartzhang/vive_motion_direction_recongnize/raw/master/MotionD
 https://github.com/cartzhang/vive_motion_direction_recongnize/tree/master/img
 
 
-## 参考
+## 五、 参考
 
 [1] https://github.com/cartzhang/ImgSayVRabc/tree/master/ViveEventDemo
 
