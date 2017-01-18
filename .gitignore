@@ -4,10 +4,10 @@ ehthumbs.db
 
 #Unity file and vs file 
 .vs
-/Library
+/MotionDirectionRecongnizeTest/Library
 
-/ProjectSettings
-/Temp
+/MotionDirectionRecongnizeTest/ProjectSettings
+/MotionDirectionRecongnizeTest/Temp
 /*.csproj
 /*.sln
 /build/build*
