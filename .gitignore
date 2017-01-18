@@ -5,6 +5,7 @@ ehthumbs.db
 #Unity file and vs file 
 .vs
 /Library
+
 /ProjectSettings
 /Temp
 /*.csproj
