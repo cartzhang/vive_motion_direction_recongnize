@@ -24,7 +24,7 @@ https://github.com/cartzhang
 
 原理很简单，就是根据路线，在一定时间内，记录路线数据，然后把数据映射到相机平面上，在根据取第一个点、中间点以及最后一个点，计算角度和斜率，在一定度数之内，都认为是某个方向的运行识别成功。
 
-![image](H:\Unity\UnityProject\vive_motion_direction_recongnize\img\a.jpg)
+![image](https://github.com/cartzhang/vive_motion_direction_recongnize/blob/master/img/a.jpg)
 
 ### 2 实现过程
 
