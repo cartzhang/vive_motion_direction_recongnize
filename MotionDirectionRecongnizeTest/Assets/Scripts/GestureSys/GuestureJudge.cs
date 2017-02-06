@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#define  NotUse_Gestrure_ByRay
+using UnityEngine;
 using System.Collections;
 using SLQJ;
 using System.Collections.Generic;
@@ -6,7 +7,6 @@ using UnityEngine.UI;
 /// <summary>
 /// 主要功能：
 /// 1.实现8中不同方向上的姿势识别
-/// 2.实现输入矢量来判断是否完成对应路线。 
 /// 注意：每次只能识别一个姿势，需要等识别完毕，才能下一个。
 /// @cartzhang
 /// </summary>
@@ -68,15 +68,16 @@ public partial class GuestureJudge : MonoBehaviour
 #if UNITY_EDITOR
         Debug.DrawRay(transform.position, transform.forward, Color.red);
 #endif
-
+#if !NotUse_Gestrure_ByRay
         CheckGestureByRay();
+#endif
         CheckGetsturebyCoordinate();
     }
 
     void GestureRecongnize(MessageObject obj)
     {
         object[] objArray = (object[])obj.MsgValue;
-        StartCoroutine(RecongnizeGetsture(Vector3.zero,(float)objArray[1]));
+        StartCoroutine(RecongnizeGetsture((GestureType)objArray[0], (float)objArray[1]));
     }
 
     /// <summary>
@@ -85,7 +86,7 @@ public partial class GuestureJudge : MonoBehaviour
     /// <param name="getstureVec"></param>
     /// <param name="TimeToDectect"></param>
     /// <returns></returns>    
-    IEnumerator RecongnizeGetsture(Vector3 getstureVec, float TimeToDectect)
+    IEnumerator RecongnizeGetsture(GestureType reconGetstureType, float TimeToDectect)
     {
         Debug.Log("start recongnize");
         bOutputResult = false;
@@ -94,24 +95,25 @@ public partial class GuestureJudge : MonoBehaviour
         currentStepTime = stepTime;
         while (TimeToDectect > 0)
         {
-            if (bOutputResult || gestureType != GestureType.None)
+            if (bOutputResult || gestureType == reconGetstureType)
             {
-                Debug.Log("jump out while");
-#if !UNITY_EDITOR
-                //for test
+                Debug.Log("jump out while loop");
                 TimeToDectect = 0;
-#endif
             }
             yield return null;
             TimeToDectect -= Time.deltaTime;            
         }
         bStartCheck = false;
         Debug.Log("begin notify");
+#if !NotUse_Gestrure_ByRay
         NotificationManager.Instance.Notify(
                NotificationType.Gesture_Recongnize_Result.ToString(), bOutputResult);
+#endif
         NotificationManager.Instance.Notify(
                NotificationType.Gesture_Recongnize_Result.ToString(), gestureType);
     }
+
+#if !NotUse_Gestrure_ByRay
 
     /// <summary>
     /// 射线来检测碰撞体标签
@@ -148,6 +150,7 @@ public partial class GuestureJudge : MonoBehaviour
             }
         }
     }
+#endif
 
     #region  Test by use coordinate
 
@@ -286,7 +289,7 @@ public partial class GuestureJudge : MonoBehaviour
 /// </summary>
 public partial class GuestureJudge
 {
-
+    private GestureType needGestureType = GestureType.Left_Right;
     void StartUnderEditorTest()
     {
         NotificationManager.Instance.Subscribe(
@@ -295,11 +298,12 @@ public partial class GuestureJudge
     
     void UpdateUnderEditor()
     {
+        // 1000.0 senconds is too long for recongnizition,so u can change it as you need.
         if (Input.GetKeyDown(KeyCode.S))
         {
             NotificationManager.Instance.Notify(
-                NotificationType.Gesture_Recongnize.ToString(),new Vector3(5,0,0),1000.0f);
-            //Debug.Log("start to check gesture");
+                NotificationType.Gesture_Recongnize.ToString(),needGestureType,1000.0f);            
+            needGestureType = (GestureType)((int)needGestureType + 1);
         }
     }
 

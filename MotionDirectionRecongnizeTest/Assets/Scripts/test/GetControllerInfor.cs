@@ -2,6 +2,11 @@
 using System.Collections;
 using Valve.VR;
 
+public class template<T>
+{
+    
+}
+
 public class GetControllerInfor : MonoBehaviour
 {
     public VRControllerState_t controllerState;
@@ -22,6 +27,7 @@ public class GetControllerInfor : MonoBehaviour
     void ShowPosState()
     {
         var system = OpenVR.System;
+        Debug.Assert(system != null);
         if (system != null && system.GetControllerStateWithPose(trackingUniverOrig,controllerIndex, ref controllerState, ref DevicePoseState))
         {  
             if (DevicePoseState.bPoseIsValid && DevicePoseState.bDeviceIsConnected)
