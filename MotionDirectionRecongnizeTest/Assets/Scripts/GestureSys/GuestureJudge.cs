@@ -1,4 +1,5 @@
 ﻿#define  NotUse_Gestrure_ByRay
+#define  NoTest_Gesture_Code
 using UnityEngine;
 using System.Collections;
 using SLQJ;
@@ -175,8 +176,7 @@ public partial class GuestureJudge : MonoBehaviour
         }
         // 1. 初始化数据表，并把数据转换到相机视口坐标系上。
         Vector3 currentRecordPos = transform.position;
-        Vector3 currentWVPPos = mainCamera.WorldToViewportPoint(currentRecordPos);
-        gestureType = GestureType.None;
+        Vector3 currentWVPPos = mainCamera.WorldToViewportPoint(currentRecordPos);        
         if (!bInitialOnce)
         {
             bInitialOnce = true;
@@ -292,12 +292,15 @@ public partial class GuestureJudge
     private GestureType needGestureType = GestureType.Left_Right;
     void StartUnderEditorTest()
     {
+#if !NoTest_Gesture_Code
         NotificationManager.Instance.Subscribe(
               NotificationType.Gesture_Recongnize_Result.ToString(), GetRecongnizeResult);
+#endif
     }
     
     void UpdateUnderEditor()
     {
+        #if !NoTest_Gesture_Code
         // 1000.0 senconds is too long for recongnizition,so u can change it as you need.
         if (Input.GetKeyDown(KeyCode.S))
         {
@@ -305,6 +308,7 @@ public partial class GuestureJudge
                 NotificationType.Gesture_Recongnize.ToString(),needGestureType,1000.0f);            
             needGestureType = (GestureType)((int)needGestureType + 1);
         }
+        #endif
     }
 
 #if UNITY_EDITOR
